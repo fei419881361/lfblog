@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:replace="~{fragment/header::header}">
+
+</head>
+<body>
+    <div class="container blog-content-container">
+        <!--认证用户见到的-->
+        <div sec:authorize="isAuthenticated()">
+            <p>已经有用户登录</p>
+            <p>登录用户是：<span sec:authentication="name"></span></p>
+            <!--角色-->
+            <p>用户登录：<span sec:authentication="principal.authorities"></span></p>
+        </div>
+        <!--未认证用户见到的-->
+        <div sec:authorize="isAnonymous()">
+            <p>未有用户登录</p>
+        </div>
+    </div>
+
+
+
+    <div th:insert="~{fragment/footer::footer}"></div>
+</body>
+</html>

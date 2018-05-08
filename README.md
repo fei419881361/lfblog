@@ -4,6 +4,7 @@
 ### 博客系统
 
     首先第一步实现后台管理系统
+	Springboot + Thymeleaf + SpringData JPA + Springsecurity
 ##### 博客后台管理系统
 
 ######  留言管理

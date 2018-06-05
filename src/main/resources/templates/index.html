@@ -1,26 +1,30 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-<head th:replace="~{fragment/header::header}">
-
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../layui/css/layui.css">
 </head>
-<body>
-    <div class="container blog-content-container">
-        <!--认证用户见到的-->
-        <div sec:authorize="isAuthenticated()">
-            <p>已经有用户登录</p>
-            <p>登录用户是：<span sec:authentication="name"></span></p>
-            <!--角色-->
-            <p>用户登录：<span sec:authentication="principal.authorities"></span></p>
-        </div>
-        <!--未认证用户见到的-->
-        <div sec:authorize="isAnonymous()">
-            <p>未有用户登录</p>
-        </div>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div th:insert="~{fragment/header::header}"></div>
+    <div th:replace="~{fragment/sidescroll::sidescroll}"></div>
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">内容主体区域</div>
     </div>
 
-
-
     <div th:insert="~{fragment/footer::footer}"></div>
+</div>
+<script src="../layui/layui.js"></script>
+<script>
+    //JavaScript代码区域
+    layui.use('element', function(){
+        var element = layui.element;
+
+    });
+</script>
 </body>
 </html>

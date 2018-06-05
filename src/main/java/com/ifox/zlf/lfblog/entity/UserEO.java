@@ -13,7 +13,9 @@ public class UserEO {
     private String name;
     private Integer age;
 
+
     public UserEO(){}
+
 
     public Integer getId() {
         return id;

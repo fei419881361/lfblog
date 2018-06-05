@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="utf-8">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>lfblog 后台管理系统</title>
+    <link rel="stylesheet" href="../../layui/css/layui.css">
+</head>
+<body class="layui-layout-body">
+
+<div class="layui-layout layui-layout-admin">
+    <div th:replace="~{fragment/header::header}"></div>
+    <div th:replace="~{fragment/sidescroll::sidescroll}"></div>
+    <!-- 内容主体区域 -->
+    <div class="layui-body">
+        <div style="padding: 15px;">
+            <div style="margin-bottom: 5px;">
+
+                <ins class="adsbygoogle" style="display:inline-block;width:970px;height:0px" data-ad-client="ca-pub-6111334333458862" data-ad-slot="3820120620"></ins>
+
+            </div>
+
+            <table class="layui-table" lay-data="{width: 1300, height:550, url:'/blog/list', page:true, id:'idTest'}" lay-filter="demo">
+                <thead>
+                <tr>
+                    <th lay-data="{type:'checkbox', fixed: 'left'}"></th>
+                    <th lay-data="{field:'uploadDate', width:250}">创作时间</th>
+                    <th lay-data="{field:'title', width:250}">标题</th>
+                    <th lay-data="{field:'likesNum', width:80}">点赞数</th>
+                    <th lay-data="{field:'clickNum', width:80}">点击量</th>
+                    <th lay-data="{field:'modifyDate', width:250, sort: true}">修改时间</th>
+                    <th lay-data="{fixed: 'right', width:250, align:'center', toolbar: '#barDemo'}"></th>
+                </tr>
+                </thead>
+                <script type="text/html" id="barDemo">
+                    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+                    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                </script>
+            </table>
+        </div>
+    </div>
+
+    <div th:insert="~{fragment/footer::footer}"></div>
+</div>
+
+<script src="../../editormd/js/jquery-3.3.1.min.js"></script>
+<script src="../../layui/layui.js" charset="utf-8"></script>
+<script src="../../js/request-util.js"></script>
+
+<script>
+    var layer;
+    layui.use("layer",function () {
+        layer = layui.layer;
+    });
+    layui.use('table', function(){
+        var table = layui.table;
+        //监听表格复选框选择
+        table.on('checkbox(demo)', function(obj){
+            console.log(obj)
+        });
+        //监听工具条
+        table.on('tool(demo)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'detail'){
+                layer.msg('ID：'+ data.id + ' 的查看操作');
+            } else if(obj.event === 'del'){
+                layer.confirm('真的删除行么', function(index){
+                    delete_blog(data.id,layer,obj);
+                    layer.close(index);
+                });
+            } else if(obj.event === 'edit'){
+                layer.alert('编辑行：<br>'+ JSON.stringify(data))
+            }
+        });
+
+        var $ = layui.$, active = {
+            getCheckData: function(){ //获取选中数据
+                var checkStatus = table.checkStatus('idTest')
+                    ,data = checkStatus.data;
+                layer.alert(JSON.stringify(data));
+            }
+            ,getCheckLength: function(){ //获取选中数目
+                var checkStatus = table.checkStatus('idTest')
+                    ,data = checkStatus.data;
+                layer.msg('选中了：'+ data.length + ' 个');
+            }
+            ,isAll: function(){ //验证是否全选
+                var checkStatus = table.checkStatus('idTest');
+                layer.msg(checkStatus.isAll ? '全选': '未全选')
+            }
+        };
+
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>
+
+</body>
+</html>

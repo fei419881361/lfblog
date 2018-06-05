@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>slidescroll</title>
+</head>
+<body>
+    <div th:fragment="sidescroll">
+        <div class="layui-side layui-bg-black">
+            <div class="layui-side-scroll">
+                <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+                <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+                    <li class="layui-nav-item"><a href="/blog/all" th:href="@{~/blog/all}">我的文章</a></li>
+                    <li class="layui-nav-item"><a href="/blog/write" th:href="@{~/blog/write}">写文章</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

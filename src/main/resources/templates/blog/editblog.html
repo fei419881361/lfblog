@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="utf-8" />
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>Simple example - Editor.md examples</title>
+    <link rel="stylesheet" href="../../editormd/css/stryle.css" />
+    <link rel="stylesheet" href="../../editormd/css/editormd.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../layui/css/layui.css">
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div th:insert="~{fragment/header::header}"></div>
+    <div th:replace="~{fragment/sidescroll::sidescroll}"></div>
+    <div class="layui-body">
+        <div id="layout">
+            <header>
+                <input type="text" name="title" id="title" required lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+            </header>
+            <div id="test-editormd">
+        <textarea style="display:none;" id="content"></textarea>
+            </div>
+            <div>
+                <button class="layui-btn layui-btn-lg layui-btn-radius layui-btn-normal layui-col-md-offset5" id="save">保存文章</button>
+            </div>
+        </div>
+    </div>
+    <div th:insert="~{fragment/footer::footer}"></div>
+</div>
+<script src="../../editormd/js/jquery-3.3.1.min.js"></script>
+<script src="../../editormd/js/editormd.js"></script>
+<script src="../../js/request-util.js"></script>
+<script src="../../layui/layui.js"></script>
+<script type="text/javascript">
+    var testEditor;
+    //取消标签
+    function cancle(id){
+        $("#"+id).remove();
+    }
+
+
+    $(function() {
+        var layer;
+        var item_index = 0;
+        layui.use("layer",function () {
+            layer = layui.layer;
+        });
+        testEditor = editormd("test-editormd", {
+            width   : "90%",
+            height  : 640,
+            syncScrolling : "single",
+            path    : "../lib/"
+        });
+
+
+        $("#save").click(function () {
+            layer.open({
+                type: 1,
+                title:'添加item',
+                area:['700px','320px'],
+                btn: ['上传文章', '关闭'],
+                content:  $('#additem'),
+                btn1:function (index,layero) {
+                    //最终上传文章
+                    let title = $("#title").val();
+                    let content = $("#content").val();
+                    let items = [];
+                    $(".item-button").each(function () {
+                        items.push($(this).text());
+                    })
+                    save_write_blog(title,content,items,layer)
+                    layer.close(index)
+                }
+            });
+        });
+        //添加标签的按钮
+        $("#ifram_add").click(function () {
+            let val = $("#item_val").val();
+            if(val===null||val===''){
+                layer.open({
+                    type: 1
+                    ,offset: 'auto' //具体配置参考：offset参数项
+                    ,content: '输入内容为空'
+                    ,btn: '关闭'
+                    ,btnAlign: 'c' //按钮居中
+                    ,shade: 0 //不显示遮罩
+                    ,yes: function(){
+                        layer.close(layer.index)
+                    }
+                })
+            }else {
+                $("#ifram_items").append("<button onclick='cancle(this.id)' class='layui-btn item-button' id='"+item_index+"'>"+val+"</button>")
+                item_index++;
+            }
+        })
+
+    });
+</script>
+<div id="additem" style="display: none">
+    <label class="layui-form-label layui-col-md3">添加item</label>
+    <div class="layui-col-md8">
+        <input type="text" name="title" required  lay-verify="required" placeholder="请输入标签" autocomplete="off" class="layui-input layui-col-md6" id="item_val">
+        <button class="layui-btn layui-col-md2" id="ifram_add">添加</button>
+    </div>
+    <hr>
+    <div class="layui-btn-container" id="ifram_items">
+
+    </div>
+</div>
+</body>
+</html>

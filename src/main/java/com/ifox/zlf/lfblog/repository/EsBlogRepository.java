@@ -1,7 +1,6 @@
 package com.ifox.zlf.lfblog.repository;
 
 import com.ifox.zlf.lfblog.entity.EsBlogEO;
-import org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchRepositoriesAutoConfiguration;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
